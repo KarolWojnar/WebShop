@@ -1,4 +1,4 @@
-package com.webshop.interentshop.Model;
+package com.webshop.Model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Category {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long categoryId;
+    @Column(name = "role_id")
+    private long roleId;
+    @Column(nullable = false)
     private String name;
-    @Column(columnDefinition = "TEXT")
-    private String description;
 }
