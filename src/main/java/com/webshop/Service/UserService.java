@@ -24,6 +24,7 @@ public class UserService {
     }
 
     public User addNewUser(String name, String email, String password) {
+        //TODO: Fix it man
         User u = new User();
         u.setEmail(email);
         u.setPassword(password);
