@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Cart (
     FOREIGN KEY (user_id) REFERENCES User(user_id)
     );
 
-CREATE TABLE IF NOT EXISTS CartItem (
+CREATE TABLE IF NOT EXISTS Cart_item (
     cart_item_id INT AUTO_INCREMENT PRIMARY KEY,
     cart_id INT,
     product_id INT,
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `Order` (
     FOREIGN KEY (user_id) REFERENCES User(user_id)
     );
 
-CREATE TABLE IF NOT EXISTS OrderItem (
+CREATE TABLE IF NOT EXISTS Order_item (
      order_item_id INT AUTO_INCREMENT PRIMARY KEY,
      order_id INT,
      product_id INT,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS Role (
     name VARCHAR(50) NOT NULL
     );
 
-CREATE TABLE IF NOT EXISTS UserRole (
+CREATE TABLE IF NOT EXISTS User_role (
     user_role_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
     role_id INT,

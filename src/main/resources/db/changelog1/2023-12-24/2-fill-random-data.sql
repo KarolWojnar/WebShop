@@ -1,17 +1,18 @@
 --liquibase formatted sql
 --changeset karol:2
 
+# passwords hashed by bycrypt(default password = haslo123)
 INSERT INTO User (username, password, email) VALUES
-     ('user1', 'password1', 'user1@example.com'),
-     ('user2', 'password2', 'user2@example.com'),
-     ('user3', 'password3', 'user3@example.com'),
-     ('user4', 'password4', 'user4@example.com'),
-     ('user5', 'password5', 'user5@example.com'),
-     ('user6', 'password6', 'user6@example.com'),
-     ('user7', 'password7', 'user7@example.com'),
-     ('user8', 'password8', 'user8@example.com'),
-     ('user9', 'password9', 'user9@example.com'),
-     ('user10', 'password10', 'user10@example.com');
+     ('admin', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'admin@example.com'),
+     ('user2', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user2@example.com'),
+     ('user3', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user3@example.com'),
+     ('user4', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user4@example.com'),
+     ('user5', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user5@example.com'),
+     ('user6', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user6@example.com'),
+     ('user7', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user7@example.com'),
+     ('user8', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user8@example.com'),
+     ('user9', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user9@example.com'),
+     ('user10', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user10@example.com');
 
 INSERT INTO Product (name, description, price, stock_quantity) VALUES
        ('Product1', 'Description1', 19.99, 100),
@@ -44,7 +45,7 @@ INSERT INTO Cart (user_id, status) VALUES
     (9, 'ACTIVE'),
     (10, 'INACTIVE');
 
-INSERT INTO CartItem (cart_id, product_id, quantity) VALUES
+INSERT INTO Cart_item (cart_id, product_id, quantity) VALUES
      (1, 1, 2),
      (2, 3, 1),
      (3, 5, 3),
@@ -68,7 +69,7 @@ INSERT INTO `Order` (user_id, total_price, status) VALUES
    (9, 299.95, 'DELIVERED'),
    (10, 109.99, 'PROCESSING');
 
-INSERT INTO OrderItem (order_id, product_id, quantity, unit_price) VALUES
+INSERT INTO Order_item (order_id, product_id, quantity, unit_price) VALUES
        (1, 1, 2, 39.99),
        (2, 3, 1, 29.99),
        (3, 5, 3, 69.99),
@@ -84,7 +85,7 @@ INSERT INTO Role (name) VALUES
     ('ROLE_ADMIN'),
     ('ROLE_USER');
 
-INSERT INTO UserRole (user_id, role_id) VALUES
+INSERT INTO User_role (user_id, role_id) VALUES
     (1, 1),
     (2, 2),
     (3, 2),
