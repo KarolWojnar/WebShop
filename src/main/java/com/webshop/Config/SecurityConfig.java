@@ -28,8 +28,8 @@ public class SecurityConfig {
         http.csrf().disable().
         authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/users").hasRole("ADMIN")
+                                .requestMatchers("/users").permitAll()
+                                .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
                                 .requestMatchers("/users/**").hasRole("USER")
                                 .anyRequest().authenticated()
                 ).formLogin(

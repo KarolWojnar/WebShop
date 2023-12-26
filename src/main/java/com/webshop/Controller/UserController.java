@@ -1,5 +1,6 @@
 package com.webshop.Controller;
 
+import com.webshop.Model.Dto.UserDTO;
 import com.webshop.Model.User;
 import com.webshop.Service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +28,7 @@ public class UserController {
     }
     @PostMapping("/users")
     @Operation(summary = "Add new user")
-    public User addUser(@RequestBody String name, @RequestBody String email, @RequestBody String password) {
-        return userService.addNewUser(name, email, password);
+    public User addUser(@RequestBody User user) {
+        return userService.addNewUser(user);
     }
 }
