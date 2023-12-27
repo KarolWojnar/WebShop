@@ -23,5 +23,15 @@
     </div>
 </nav>
 <br /><br />
+<div th:if="${user}">
+    <h4 th:text="${user.getUsername()}"></h4>
+    <h4 th:text="${user.getEmail()}"></h4>
+    <h4 th:text="${user.getPassword()}"></h4>
+    <h4 th:each="role: ${user.roles}" th:text="${role.getName()}"></h4>
+    <h4 th:text="${user.getUserId()}"></h4>
+</div>
+<div th:if="${noUser}">
+    <h4 th:text="${noUser.toString()}"></h4>
+</div>
 </body>
 </html>
