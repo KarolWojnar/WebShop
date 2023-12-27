@@ -1,35 +1,29 @@
 package com.webshop.Controller;
 
-import com.webshop.Model.Dto.UserDTO;
-import com.webshop.Model.User;
-import com.webshop.Service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.webshop.Service.LoginService;
+import com.webshop.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequiredArgsConstructor
-@Tag(name = "User Controller", description = "Endpoints for managing users")
+@RequestMapping("/profile")
 public class UserController {
     private final UserService userService;
-
-    @GetMapping("/users")
-    @Operation(summary = "get all users")
-    public List<User> getUsers() {
-        return userService.getAllUsers();
-    }
-    @GetMapping("/users/{id}")
-    @Operation(summary = "Get single user")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUser(id);
-    }
-    @PostMapping("/users")
-    @Operation(summary = "Add new user")
-    public User addUser(@RequestBody User user) {
-        return userService.addNewUser(user);
+    private final LoginService loginService;
+    @GetMapping("/edit")
+    public String userEditProfile(Model model, Authentication auth) {
+        loginService.getAuthUser(model, auth);
+        return "editProfile";
     }
 
+    @PostMapping("/editProfile")
+    public String editUser(@RequestParam("newUsername") String username, @RequestParam("newEmail") String email,
+                             Model model, Authentication auth) {
+        userService.editUser(username, email, model, auth);
+        return "editProfile";
+    }
 }

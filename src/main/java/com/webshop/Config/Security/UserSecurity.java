@@ -1,6 +1,6 @@
 package com.webshop.Config.Security;
 
-import com.webshop.Service.CustomUserDetails;
+import com.webshop.Service.User.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 

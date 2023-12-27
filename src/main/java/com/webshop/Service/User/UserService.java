@@ -1,4 +1,4 @@
-package com.webshop.Service;
+package com.webshop.Service.User;
 
 import com.webshop.Model.Dto.UserDTO;
 import com.webshop.Model.Role;
@@ -8,13 +8,16 @@ import com.webshop.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.beans.Transient;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,5 +42,23 @@ public class UserService {
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         userRepository.save(u);
         return u;
+    }
+
+    @Transactional
+    public void editUser(String username, String email, Model model, Authentication auth) {
+        if (auth.isAuthenticated()) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof CustomUserDetails user) {
+                Optional<User> optionalUser = userRepository.findById(user.getUser().getUserId());
+                if (optionalUser.isPresent()) {
+                    User editUser = optionalUser.get();
+                    editUser.setUsername(username);
+                    editUser.setEmail(email);
+                    userRepository.save(editUser);
+                    model.addAttribute("user", editUser);
+                    model.addAttribute("success", "Changes saved successfully.");
+                } else model.addAttribute("error", "No user by id");
+            } else model.addAttribute("error", "User is non principal of UserDetalis");
+        } else model.addAttribute("error", "Error while saving changes.2");
     }
 }

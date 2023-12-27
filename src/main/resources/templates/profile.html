@@ -29,6 +29,8 @@
     <h4 th:text="${user.getPassword()}"></h4>
     <h4 th:each="role: ${user.roles}" th:text="${role.getName()}"></h4>
     <h4 th:text="${user.getUserId()}"></h4>
+
+    <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Edit youy profile</a>
 </div>
 <div th:if="${noUser}">
     <h4 th:text="${noUser.toString()}"></h4>

@@ -1,0 +1,58 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">Spring Security Login With Database Authentication</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+<!--                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>-->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/><br/>
+<div th:if="${user}">
+    <!-- Formularz do edycji profilu -->
+    <form th:action="@{/profile/editProfile}" method="post">
+        <label for="newUsername">New Username:</label>
+        <input type="text" id="newUsername" name="newUsername" th:value="${user.getUsername()}" required/>
+        <br/>
+
+        <label for="newEmail">New Email:</label>
+        <input type="email" id="newEmail" name="newEmail" th:value="${user.getEmail()}" required/>
+        <br/>
+
+        <label>New Password:</label>
+        <a th:href="@{/profile/newPassword}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Change password</a>
+        <br/>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+<div th:if="${success}">
+    <div class="alert alert-success" role="alert">
+        <p th:text="${success}"></p>
+    </div>
+</div>
+
+<div th:if="${error}">
+    <div class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+</body>
+</html>

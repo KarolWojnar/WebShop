@@ -1,4 +1,4 @@
-package com.webshop.Service;
+package com.webshop.Service.User;
 
 import com.webshop.Model.User;
 import lombok.RequiredArgsConstructor;
