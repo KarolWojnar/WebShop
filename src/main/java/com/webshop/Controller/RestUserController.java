@@ -5,6 +5,7 @@ import com.webshop.Service.User.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class RestUserController {
     }
     @PostMapping("/users")
     @Operation(summary = "Add new user")
-    public User addUser(@RequestBody User user) {
-        return userService.addNewUser(user);
+    public User addUser(@RequestBody User user, Model model) {
+        return userService.addNewUser(user, model);
     }
 }

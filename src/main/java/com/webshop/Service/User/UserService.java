@@ -36,12 +36,17 @@ public class UserService {
     }
 
     @Transactional
-    public User addNewUser(User u) {
+    public User addNewUser(User u, Model model) {
         Role role = roleRepository.findById(2L).orElseThrow(() -> new RuntimeException("Default role not found"));
-        u.setRoles(Collections.singleton(role));
-        u.setPassword(passwordEncoder.encode(u.getPassword()));
-        userRepository.save(u);
-        return u;
+        User newUser = new User();
+        newUser.setRoles(Collections.singleton(role));
+        newUser.setEmail(u.getEmail());
+        newUser.setUsername(u.getUsername());
+        newUser.setPassword(passwordEncoder.encode(u.getPassword()));
+        userRepository.save(newUser);
+        model.addAttribute("success", "Registration successfull!");
+        model.addAttribute("user", newUser);
+        return newUser;
     }
 
     @Transactional
@@ -60,5 +65,10 @@ public class UserService {
                 } else model.addAttribute("error", "No user by id");
             } else model.addAttribute("error", "User is non principal of UserDetalis");
         } else model.addAttribute("error", "Error while saving changes.2");
+    }
+
+    public boolean isNotPresent(User user) {
+        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
+        return optionalUser.isEmpty();
     }
 }

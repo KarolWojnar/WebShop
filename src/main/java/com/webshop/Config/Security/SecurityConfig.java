@@ -21,12 +21,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/users").permitAll()
+                        .requestMatchers("/users", "/profile").authenticated()
                         .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
                         .requestMatchers("/users/{id}").access("@userSecurity.checkUserId(authentication, #id)")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
