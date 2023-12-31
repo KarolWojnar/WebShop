@@ -28,7 +28,7 @@ public class RestUserController {
     }
     @PostMapping("/users")
     @Operation(summary = "Add new user")
-    public User addUser(@RequestBody User user, Model model) {
-        return userService.addNewUser(user, model);
+    public String addUser(@RequestBody User user) {
+        return userService.addNewUser(user);
     }
 }

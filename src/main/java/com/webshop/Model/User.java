@@ -15,16 +15,20 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-public class User{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(hidden = true)
     private Long userId;
+
     @Column(nullable = false)
     private String username;
+
     private String password;
+
     private String email;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "User_role",
@@ -33,4 +37,10 @@ public class User{
     )
     @Schema(hidden = true)
     private Set<Role> roles;
+
+    @Column(nullable = false)
+    private boolean activated;
+
+    private String activationToken;
+
 }

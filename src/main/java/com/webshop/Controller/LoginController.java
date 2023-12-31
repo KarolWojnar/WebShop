@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -31,13 +34,12 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@ModelAttribute("user") User user, Model model) {
+    public String register(@ModelAttribute("user") User user, Model model) {
         if (userService.isNotPresent(user)) {
-            userService.addNewUser(user, model);
-            return ResponseEntity.ok("Registration successful!");
+            String response = userService.addNewUser(user);
+            model.addAttribute("successRegister", response);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+        else model.addAttribute("errorRegister", "User already exist!");
+        return "login";
     }
-
-
 }

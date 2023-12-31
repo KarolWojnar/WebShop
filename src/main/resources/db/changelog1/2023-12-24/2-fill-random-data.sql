@@ -2,17 +2,18 @@
 --changeset karol:2
 
 # passwords hashed by bycrypt(default password = haslo123)
-INSERT INTO User (username, password, email) VALUES
-     ('admin', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'admin@example.com'),
-     ('user2', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user2@example.com'),
-     ('user3', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user3@example.com'),
-     ('user4', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user4@example.com'),
-     ('user5', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user5@example.com'),
-     ('user6', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user6@example.com'),
-     ('user7', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user7@example.com'),
-     ('user8', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user8@example.com'),
-     ('user9', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user9@example.com'),
-     ('user10', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user10@example.com');
+INSERT INTO User (username, password, email, activated, activation_token) VALUES
+      ('admin', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'admin@example.com', true, NULL),
+      ('user2', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user2@example.com', true, 'unique_token_for_user2'),
+      ('user3', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user3@example.com', true, 'unique_token_for_user3'),
+      ('user4', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user4@example.com', true, 'unique_token_for_user4'),
+      ('user5', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user5@example.com', false, 'unique_token_for_user5'),
+      ('user6', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user6@example.com', false, 'unique_token_for_user6'),
+      ('user7', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user7@example.com', false, 'unique_token_for_user7'),
+      ('user8', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user8@example.com', false, 'unique_token_for_user8'),
+      ('user9', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user9@example.com', false, 'unique_token_for_user9'),
+      ('user10', '$2a$10$93kp3hxxkXegHiqeYg2R9ObDtSKFy7or4YwgQhC7ywm64EuycrBPG', 'user10@example.com', false, 'unique_token_for_user10');
+
 
 INSERT INTO Product (name, description, price, stock_quantity) VALUES
        ('Product1', 'Description1', 19.99, 100),

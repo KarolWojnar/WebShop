@@ -54,7 +54,7 @@
         <div class="col-lg-6 col-12 form-container">
             <button id="showLoginFormBtn" class="btn btn-primary hidden">Login</button>
             <div th:if="${param.error}">
-                <div class="alert alert-danger">Invalid Username or Password</div>
+                <div class="error-message alert alert-danger">Invalid Username or Password</div>
             </div>
             <div th:if="${param.logout}">
                 <div class="alert alert-success">You have been logged out.</div>
@@ -82,18 +82,18 @@
         </div>
         <div class="col-lg-6 col-12 form-container">
             <button id="showRegisterFormBtn" class="btn btn-primary">Register</button>
-            <div th:if="${error}">
-                <div class="error-message" th:id="${errorFieldId}" th:text="${error}"></div>
+            <div th:if="${errorRegister}">
+                <div class="error-message alert alert-danger" th:text="${errorRegister}"></div>
             </div>
-            <div th:if="${success}">
-                <div class="alert alert-success" th:value="${success}"></div>
+            <div th:if="${successRegister}">
+                <div class="alert alert-success" th:text="${successRegister}"></div>
             </div>
             <div class="card hidden" id="registerFormContainer">
                 <div class="card-header">
                     <h2 class="text-center">Register</h2>
                 </div>
                 <div class="card-body">
-                    <form method="post" id="formRegister" role="form" th:action="@{/register}" class="form-horizontal">
+                    <form method="post" id="formRegister" th:action="@{/register}" class="form-horizontal">
                         <div class="form-group mb-3">
                             <label class="control-label"> Username</label>
                             <input required type="text" id="username" name="username" class="form-control" placeholder="Enter username" />
@@ -109,6 +109,7 @@
                         <div class="form-group mb-3">
                             <label class="control-label"> Confirm Password</label>
                             <input required type="password" id="passwordConfirm" name="passwordConfirm" class="form-control" placeholder="Confirm password" />
+                            <div class="error-message" id="passwordMismatchError"></div>
                         </div>
                         <div class="form-group mb-3">
                             <button type="submit" class="btn btn-primary">Register</button>
@@ -120,7 +121,6 @@
     </div>
 </div>
 <script>
-
     document.addEventListener('DOMContentLoaded', function () {
         var loginFormContainer = document.getElementById('loginFormContainer');
         var registerFormContainer = document.getElementById('registerFormContainer');
@@ -163,41 +163,30 @@
         var passwordField = document.getElementById('passwordRegister');
         var passwordConfirmField = document.getElementById('passwordConfirm');
         var formRegister = document.getElementById('formRegister');
+        var passwordMismatchError = document.getElementById('passwordMismatchError');
 
         formRegister.addEventListener('submit', function (event) {
             event.preventDefault();
 
-            var formData = new FormData(formRegister);
+            var password = passwordField.value;
+            var confirmPassword = passwordConfirmField.value;
 
-            fetch('/register', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errors => {
-                            errors.forEach(error => {
-                                var fieldId = error.field + 'Error';
-                                var errorField = document.getElementById(fieldId);
-                                var inputField = document.getElementById(error.field);
+            if (password.length < 8) {
+                showAlert('Password must be at least 8 characters long.', 'alert-danger');
+                return;
+            }
 
-                                errorField.innerHTML = error.defaultMessage;
-                                inputField.classList.add('field-error');
-                            });
-                        });
-                    } else {
-                        return response.text().then(success => {
-                            alert(success);
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match.', 'alert-danger');
+                return;
+            }
 
-                            setTimeout(function () {
-                                hideAlerts();
-                            }, 4000);
-                        });
-                    }
-                });
+            passwordMismatchError.innerHTML = '';
+            passwordField.classList.remove('field-error');
+            passwordConfirmField.classList.remove('field-error');
         });
-    });
 
+    });
 
 </script>
 </body>
