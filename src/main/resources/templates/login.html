@@ -6,6 +6,9 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: rgba(52, 58, 64, 0.85);
+        }
         .hidden {
             display: none;
         }
@@ -36,6 +39,46 @@
         .field-error {
             border: 1px solid red;
         }
+
+        #loginFormContainer {
+            background-color: rgba(52, 58, 64, 0.76);
+            color: #ffffff;
+            border: rgba(52, 58, 64, 0.76);
+        }
+
+        #loginFormContainer label {
+            color: #ffffff;
+        }
+
+        #loginFormContainer button {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        #loginFormContainer button:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        #registerFormContainer {
+            background-color: rgba(117, 117, 117, 0.5);
+            color: #ffffff;
+            border: 1px solid rgba(117, 117, 117, 0.5);
+        }
+
+        #registerFormContainer label {
+            color: #ffffff;
+        }
+
+        #registerFormContainer button {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        #registerFormContainer button:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +95,7 @@
 <div class="container">
     <div class="row d-flex flex-column flex-lg-row col-container">
         <div class="col-lg-6 col-12 form-container">
-            <button id="showLoginFormBtn" class="btn btn-primary hidden">Login</button>
+            <button id="showLoginFormBtn" class="btn btn-danger hidden">Login</button>
             <div th:if="${param.error}">
                 <div class="error-message alert alert-danger">Invalid Username or Password</div>
             </div>
@@ -64,7 +107,7 @@
                     <h2 class="text-center">Login</h2>
                 </div>
                 <div class="card-body">
-                    <form method="post" role="form" th:action="@{/login}" class="form-horizontal">
+                    <form method="post" id="formLogin" role="form" th:action="@{/login}" class="form-horizontal">
                         <div class="form-group mb-3">
                             <label class="control-label"> Username</label>
                             <input required type="text" id="usernameLogin" name="username" class="form-control" placeholder="Enter username" />
@@ -81,7 +124,7 @@
             </div>
         </div>
         <div class="col-lg-6 col-12 form-container">
-            <button id="showRegisterFormBtn" class="btn btn-primary">Register</button>
+            <button id="showRegisterFormBtn" class="btn btn-danger">Register</button>
             <div th:if="${errorRegister}">
                 <div class="error-message alert alert-danger" th:text="${errorRegister}"></div>
             </div>
@@ -92,7 +135,7 @@
                 <div class="card-header">
                     <h2 class="text-center">Register</h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body abc">
                     <form method="post" id="formRegister" th:action="@{/register}" class="form-horizontal">
                         <div class="form-group mb-3">
                             <label class="control-label"> Username</label>
@@ -121,73 +164,86 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var loginFormContainer = document.getElementById('loginFormContainer');
-        var registerFormContainer = document.getElementById('registerFormContainer');
-        var showRegisterFormBtn = document.getElementById('showRegisterFormBtn');
-        var showLoginFormBtn = document.getElementById('showLoginFormBtn');
-        var alertContainers = document.querySelectorAll('.alert');
+    var loginFormContainer = document.getElementById('loginFormContainer');
+    var registerFormContainer = document.getElementById('registerFormContainer');
+    var showRegisterFormBtn = document.getElementById('showRegisterFormBtn');
+    var showLoginFormBtn = document.getElementById('showLoginFormBtn');
+    var alertContainers = document.querySelectorAll('.alert');
+    var body = document.body;
 
-        showRegisterFormBtn.addEventListener('click', function () {
-            loginFormContainer.classList.add('hidden');
-            registerFormContainer.classList.remove('hidden');
-            showRegisterFormBtn.classList.add('hidden');
-            showLoginFormBtn.classList.remove('hidden');
+    showRegisterFormBtn.addEventListener('click', function () {
+        loginFormContainer.classList.add('hidden');
+        registerFormContainer.classList.remove('hidden');
+        showRegisterFormBtn.classList.add('hidden');
+        showLoginFormBtn.classList.remove('hidden');
 
-            hideAlerts();
-        });
-
-        showLoginFormBtn.addEventListener('click', function () {
-            loginFormContainer.classList.remove('hidden');
-            registerFormContainer.classList.add('hidden');
-            showRegisterFormBtn.classList.remove('hidden');
-            showLoginFormBtn.classList.add('hidden');
-
-            hideAlerts();
-        });
-
-        function hideAlerts() {
-            alertContainers.forEach(function (alert) {
-                alert.style.display = 'none';
-            });
-
-            document.querySelectorAll('.error-message').forEach(function (error) {
-                error.innerHTML = '';
-            });
-
-            document.querySelectorAll('.form-control').forEach(function (field) {
-                field.classList.remove('field-error');
-            });
-        }
-
-        var passwordField = document.getElementById('passwordRegister');
-        var passwordConfirmField = document.getElementById('passwordConfirm');
-        var formRegister = document.getElementById('formRegister');
-        var passwordMismatchError = document.getElementById('passwordMismatchError');
-
-        formRegister.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            var password = passwordField.value;
-            var confirmPassword = passwordConfirmField.value;
-
-            if (password.length < 8) {
-                showAlert('Password must be at least 8 characters long.', 'alert-danger');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showAlert('Passwords do not match.', 'alert-danger');
-                return;
-            }
-
-            passwordMismatchError.innerHTML = '';
-            passwordField.classList.remove('field-error');
-            passwordConfirmField.classList.remove('field-error');
-        });
-
+        hideAlerts();
+        body.style.transition = 'background-color 0.5s ease-in-out';
+        body.style.backgroundColor = '#343a40';
     });
 
+    showLoginFormBtn.addEventListener('click', function () {
+        loginFormContainer.classList.remove('hidden');
+        registerFormContainer.classList.add('hidden');
+        showRegisterFormBtn.classList.remove('hidden');
+        showLoginFormBtn.classList.add('hidden');
+
+        hideAlerts();
+        body.style.transition = 'background-color 0.5s ease-in-out';
+        body.style.backgroundColor = 'rgba(52, 58, 64, 0.85)';
+    });
+
+    function hideAlerts() {
+        alertContainers.forEach(function (alert) {
+            alert.style.display = 'none';
+        });
+
+        document.querySelectorAll('.error-message').forEach(function (error) {
+            error.innerHTML = '';
+        });
+
+        document.querySelectorAll('.form-control').forEach(function (field) {
+            field.classList.remove('field-error');
+        });
+    }
+
+    function showAlert(message, alertClass) {
+        var alertContainer = document.createElement('div');
+        alertContainer.className = 'alert ' + alertClass;
+        alertContainer.appendChild(document.createTextNode(message));
+
+        var container = document.querySelector('.abc');
+        container.insertBefore(alertContainer, container.firstChild);
+        setTimeout(function() {
+            alertContainer.remove();
+        }, 3000);
+    }
+
+    var passwordField = document.getElementById('passwordRegister');
+    var passwordConfirmField = document.getElementById('passwordConfirm');
+    var formRegister = document.getElementById('formRegister');
+    var passwordMismatchError = document.getElementById('passwordMismatchError');
+
+    formRegister.addEventListener('submit', function (event) {
+        var password = passwordField.value;
+        var confirmPassword = passwordConfirmField.value;
+
+        if (password.length < 8) {
+            event.preventDefault();
+            showAlert('Password must be at least 8 characters long.', 'alert-danger');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            showAlert('Passwords do not match.', 'alert-danger');
+            return;
+        }
+
+        passwordMismatchError.innerHTML = '';
+        passwordField.classList.remove('field-error');
+        passwordConfirmField.classList.remove('field-error');
+    });
 </script>
 </body>
 </html>

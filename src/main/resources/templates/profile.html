@@ -29,6 +29,13 @@
     <h4 th:text="${user.getPassword()}"></h4>
     <h4 th:each="role: ${user.roles}" th:text="${role.getName()}"></h4>
     <h4 th:text="${user.getUserId()}"></h4>
+    <div th:if="${!user.activated}">
+        <p>Active account!</p>
+        <a th:href="@{'/profile/activate/' + ${user.getUserId()} (token=${user.activationToken})}">Link do aktywacji</a>
+    </div>
+    <div th:if="${activationMessage}">
+        <p th:text="${activationMessage}"></p>
+    </div>
 
     <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Edit youy profile</a>
 </div>

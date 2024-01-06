@@ -4,7 +4,6 @@ import com.webshop.Model.Role;
 import com.webshop.Model.User;
 import com.webshop.Repository.RoleRepository;
 import com.webshop.Repository.UserRepository;
-import com.webshop.Service.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
-    private final EmailService emailService;
 
     public List<User> getAllUsers() {
         return userRepository.findUsers();
@@ -46,7 +45,6 @@ public class UserService {
         newUser.setPassword(passwordEncoder.encode(u.getPassword()));
         String activationToken = generateActivationToken();
         newUser.setActivationToken(activationToken);
-//        sendActivationEmail(newUser, activationToken);
         userRepository.save(newUser);
         return "Registration Succesfull!";
     }
@@ -70,15 +68,8 @@ public class UserService {
     }
 
     public boolean isNotPresent(User user) {
-        Optional<User> optionalUser = userRepository.findUserByEmail(user.getEmail());
-        return optionalUser.isEmpty();
-    }
-
-    @Transactional
-    public void sendActivationEmail(User user, String activationToken) {
-        String activationLink = "http://localhost:8080/activate/" + user.getUserId() + "?token=" + activationToken;
-        String emailBody = "Click the following link to activate your account: " + activationLink;
-        emailService.sendEmail(user.getEmail(), "Account Activation", emailBody);
+        Optional<User> optionalUserEmail = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        return (optionalUserEmail.isEmpty());
     }
 
     private String generateActivationToken() {
@@ -86,17 +77,18 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<String> activateAccount(Long userId, String token) {
+    public String activateAccount(Long userId, String token, Model model) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
+            model.addAttribute("user", user);
             if (user.getActivationToken() != null && user.getActivationToken().equals(token)) {
                 user.setActivated(true);
                 user.setActivationToken(null);
                 userRepository.save(user);
-                return ResponseEntity.ok("Account activated successfully!");
+                return "Account activated successfully!";
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+       return "User not found";
     }
 }

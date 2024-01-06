@@ -30,8 +30,10 @@ public class UserController {
         return "editProfile";
     }
 
-    @GetMapping("/activate/{userId}?token={token}")
-    public ResponseEntity<String> activateAccount(@PathVariable Long userId, @PathVariable String token) {
-        return userService.activateAccount(userId, token);
+    @GetMapping("/activate/{userId}")
+    public String activateAccount(@PathVariable Long userId, @RequestParam String token, Model model) {
+        String response = userService.activateAccount(userId, token, model);
+        model.addAttribute("activationMessage", response);
+        return "profile";
     }
 }
