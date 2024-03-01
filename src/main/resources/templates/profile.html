@@ -1,16 +1,46 @@
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            background-color: #212529;
+            border: none;
+        }
+        .card-title, .card-text {
+            color: #fff;
+        }
+        .btn-primary, .btn-info {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-primary:hover, .btn-info:hover {
+            background-color: #495057;
+        }
+        .alert {
+            margin-top: 10px;
+            background-color: #495057;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/profile/home}">Home</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
                 </li>
@@ -19,23 +49,29 @@
     </div>
 </nav>
 <br /><br />
-<div th:if="${user}">
-    <h4 th:text="${user.getUsername()}"></h4>
-    <h4 th:text="${user.getEmail()}"></h4>
-    <h4 th:each="role: ${user.roles}" th:text="${role.getName()}"></h4>
-    <h4 th:text="${user.getUserId()}"></h4>
-    <div th:if="${!user.activated}">
-        <p>Active account!</p>
-        <a th:href="@{'/profile/activate/' + ${user.getUserId()} (token=${user.activationToken})}">Link do aktywacji</a>
-    </div>
-    <div th:if="${activationMessage}">
-        <p th:text="${activationMessage}"></p>
-    </div>
+<div class="container">
+    <div th:if="${user}" class="card">
+        <div class="card-body">
+            <h4 class="card-title" th:text="${user.getUsername()}"></h4>
+            <h4 class="card-text" th:text="${user.getEmail()}"></h4>
+            <div th:each="role: ${user.roles}">
+                <h4 class="card-text" th:text="${role.getName()}"></h4>
+            </div>
+            <h4 class="card-text" th:text="${user.getUserId()}"></h4>
+            <div th:if="${!user.activated}">
+                <p class="card-text">Active account!</p>
+                <a th:href="@{'/profile/activate/' + ${user.getUserId()} (token=${user.activationToken})}" class="btn btn-primary m-3">Activation Link</a>
+            </div>
+            <div th:if="${activationMessage}">
+                <p class="card-text" th:text="${activationMessage}"></p>
+            </div>
 
-    <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Edit your profile</a>
+            <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info m-3">Edit your profile</a>
+        </div>
+    </div>
 </div>
 <div th:if="${noUser}">
-    <h4 th:text="${noUser.toString()}"></h4>
+    <h4 class="card-text" th:text="${noUser.toString()}"></h4>
 </div>
 </body>
 </html>

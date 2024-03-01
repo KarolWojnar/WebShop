@@ -10,18 +10,21 @@ CREATE TABLE IF NOT EXISTS User (
     UNIQUE KEY unique_email (email)
 );
 
-CREATE TABLE IF NOT EXISTS Product (
-   product_id INT AUTO_INCREMENT PRIMARY KEY,
-   name VARCHAR(100) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    stock_quantity INT NOT NULL
-    );
-
 CREATE TABLE IF NOT EXISTS Category (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    description TEXT
+    name VARCHAR(50) NOT NULL
+    );
+
+CREATE TABLE IF NOT EXISTS Product (
+   product_id INT AUTO_INCREMENT PRIMARY KEY,
+   title VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id INT,
+    stock_quantity INT NOT NULL,
+    rate DECIMAL(10, 2),
+    count_rate INT,
+    FOREIGN KEY (category_id) REFERENCES Category(category_id)
     );
 
 CREATE TABLE IF NOT EXISTS Cart (

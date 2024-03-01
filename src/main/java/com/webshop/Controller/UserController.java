@@ -44,4 +44,8 @@ public class UserController {
         userService.changePassword(model, auth, newPassword, oldPassword);
         return "editProfile";
     }
+    @GetMapping("/home")
+    public String returnHome() {
+        return "home";
+    }
 }

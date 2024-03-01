@@ -1,71 +1,97 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            background-color: #212529;
+            border: none;
+        }
+        .form-label {
+            color: #adb5bd;
+        }
+        .btn-primary, .btn-info, .btn-danger {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-primary:hover, .btn-info:hover, .btn-danger:hover {
+            background-color: #495057;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand">Spring Security Login With Database Authentication</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/profile}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">Edit Profile</h5>
+            <form th:action="@{/profile/editProfile}" method="post">
+                <div class="mb-3">
+                    <label for="newUsername" class="form-label">New Username:</label>
+                    <input type="text" id="newUsername" name="newUsername" class="form-control" th:value="${user.getUsername()}" required/>
+                </div>
+
+                <div class="mb-3">
+                    <label for="newEmail" class="form-label">New Email:</label>
+                    <input type="email" id="newEmail" name="newEmail" class="form-control" th:value="${user.getEmail()}" required/>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+
+            <button class="btn btn-info mt-3" id="togglePasswordForm">Change password</button>
+
+            <div class="cart mt-4" id="formPassword" hidden>
+                <form th:action="@{/profile/newPassword}" th:if="${#authorization.expression('hasRole(''USER'')')}" method="post">
+                    <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Old password:</label>
+                        <input type="password" required id="oldPassword" name="oldPassword" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New password:</label>
+                        <input type="password" required id="newPassword" name="newPassword" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPasswordConfirm" class="form-label">Confirm new password:</label>
+                        <input type="password" required id="newPasswordConfirm" name="newPasswordConfirm" class="form-control">
+                    </div>
+                    <button type="submit" id="saveButtonPassword" class="btn btn-danger">Save new Password</button>
+                    <div id="passwordAlert" class="alert mt-3" role="alert" style="display: none;"></div>
+                </form>
+            </div>
         </div>
     </div>
-</nav>
-<br/><br/>
-<div th:if="${user}">
-    <form th:action="@{/profile/editProfile}" method="post">
-        <label for="newUsername">New Username:</label>
-        <input type="text" id="newUsername" name="newUsername" th:value="${user.getUsername()}" required/>
-        <br/>
 
-        <label for="newEmail">New Email:</label>
-        <input type="email" id="newEmail" name="newEmail" th:value="${user.getEmail()}" required/>
-        <br/>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
-    <a class="btn btn-info" id="togglePasswordForm">Change password</a>
-    <br/>
-    <div class="cart" id="formPassword" hidden>
-        <form class="m-3" th:action="@{/profile/newPassword}" th:if="${#authorization.expression('hasRole(''USER'')')}" method="post">
-            <label for="oldPassword">Old password:</label>
-            <input type="password" required id="oldPassword" name="oldPassword"> </br>
-            <label for="oldPassword">New password:</label>
-            <input type="password" required id="newPassword" name="newPassword"> </br>
-            <label for="newPasswordConfirm">Confirm new password:</label>
-            <input type="password" required id="newPasswordConfirm" name="newPasswordConfirm"> </br>
-            <button type="submit" id="saveButtonPassword" class="btn btn-danger">Save new Password</button>
-            <div id="passwordAlert" class="alert mt-3" role="alert" style="display: none;"></div>
-        </form>
+    <a href="/profile" class="btn btn-secondary mt-3">Back to Profile</a>
+
+    <div th:if="${result}" class="alert mt-3" role="alert">
+        <div class="alert" role="alert">
+            <p th:text="${result}"></p>
+        </div>
+    </div>
+    <div th:if="${success}">
+        <div class="alert alert-success" role="alert">
+            <p th:text="${success}"></p>
+        </div>
+    </div>
+    <div th:if="${error}">
+        <div class="alert alert-danger" role="alert">
+            <p th:text="${error}"></p>
+        </div>
     </div>
 </div>
-<div th:if="${result}" class="alert mt-3" role="alert">
-    <div class="alert" role="alert">
-        <p th:text="${result}"></p>
-    </div>
-</div>
-<div th:if="${success}">
-    <div class="alert alert-success" role="alert">
-        <p th:text="${success}"></p>
-    </div>
-</div>
-<div th:if="${error}">
-    <div class="alert alert-danger" role="alert">
-        <p th:text="${error}"></p>
-    </div>
-</div>
+
 <script>
     var buttonPassword = document.getElementById('togglePasswordForm');
     var formPassword = document.getElementById('formPassword');
