@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -90,5 +91,24 @@ public class UserService {
             }
         }
        return "User not found";
+    }
+
+    public void changePassword(Model model, Authentication auth, String newPass, String oldPass) {
+        if (auth.isAuthenticated()) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof CustomUserDetails user) {
+                Optional<User> optional = userRepository.getUserByUserId(Math.toIntExact(user.getUser().getUserId()));
+                if (optional.isPresent()) {
+                    User userPassword = optional.get();
+                    model.addAttribute("user", userPassword);
+                    if (passwordEncoder.matches(oldPass, userPassword.getPassword())) {
+                        userPassword.setPassword(passwordEncoder.encode(newPass));
+                        userRepository.save(userPassword);
+                        model.addAttribute("result", "Password changed!");
+                        model.addAttribute("user", userPassword);
+                    } else model.addAttribute("result", "previous password is wrong!");
+                }
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-<!--                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>-->
+                    <a class="nav-link active" aria-current="page" th:href="@{/profile}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
@@ -26,7 +26,6 @@
 </nav>
 <br/><br/>
 <div th:if="${user}">
-    <!-- Formularz do edycji profilu -->
     <form th:action="@{/profile/editProfile}" method="post">
         <label for="newUsername">New Username:</label>
         <input type="text" id="newUsername" name="newUsername" th:value="${user.getUsername()}" required/>
@@ -35,24 +34,72 @@
         <label for="newEmail">New Email:</label>
         <input type="email" id="newEmail" name="newEmail" th:value="${user.getEmail()}" required/>
         <br/>
-
-        <label>New Password:</label>
-        <a th:href="@{/profile/newPassword}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Change password</a>
-        <br/>
-
         <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
+    <a class="btn btn-info" id="togglePasswordForm">Change password</a>
+    <br/>
+    <div class="cart" id="formPassword" hidden>
+        <form class="m-3" th:action="@{/profile/newPassword}" th:if="${#authorization.expression('hasRole(''USER'')')}" method="post">
+            <label for="oldPassword">Old password:</label>
+            <input type="password" required id="oldPassword" name="oldPassword"> </br>
+            <label for="oldPassword">New password:</label>
+            <input type="password" required id="newPassword" name="newPassword"> </br>
+            <label for="newPasswordConfirm">Confirm new password:</label>
+            <input type="password" required id="newPasswordConfirm" name="newPasswordConfirm"> </br>
+            <button type="submit" id="saveButtonPassword" class="btn btn-danger">Save new Password</button>
+            <div id="passwordAlert" class="alert mt-3" role="alert" style="display: none;"></div>
+        </form>
+    </div>
+</div>
+<div th:if="${result}" class="alert mt-3" role="alert">
+    <div class="alert" role="alert">
+        <p th:text="${result}"></p>
+    </div>
 </div>
 <div th:if="${success}">
     <div class="alert alert-success" role="alert">
         <p th:text="${success}"></p>
     </div>
 </div>
-
 <div th:if="${error}">
     <div class="alert alert-danger" role="alert">
         <p th:text="${error}"></p>
     </div>
 </div>
+<script>
+    var buttonPassword = document.getElementById('togglePasswordForm');
+    var formPassword = document.getElementById('formPassword');
+
+    var newPass = document.getElementById('newPassword');
+    var newPassConf = document.getElementById('newPasswordConfirm');
+    var save = document.getElementById('saveButtonPassword');
+    var passwordAlert = document.getElementById('passwordAlert');
+
+    buttonPassword.addEventListener('click', function () {
+        if (formPassword.getAttribute('hidden') !== null) formPassword.removeAttribute('hidden');
+        else formPassword.setAttribute('hidden', 'hidden');
+    })
+
+    save.addEventListener('click', function (event) {
+        var newPassword = newPass.value;
+        var newPasswordConf = newPassConf.value;
+        if (newPassword.length < 8) {
+            event.preventDefault();
+            showAlert('Password must be at least 8 characters long.', 'alert-danger');
+            return;
+        }
+        if (newPassword !== newPasswordConf) {
+            event.preventDefault();
+            showAlert('Passwords do not match.', 'alert-danger');
+            return;
+        }
+    })
+
+    function showAlert(message, alertClass) {
+        passwordAlert.innerHTML = message;
+        passwordAlert.classList.add(alertClass);
+        passwordAlert.style.display = 'block';
+    }
+</script>
 </body>
 </html>

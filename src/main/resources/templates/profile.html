@@ -9,10 +9,6 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand">Spring Security Login With Database Authentication</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -26,7 +22,6 @@
 <div th:if="${user}">
     <h4 th:text="${user.getUsername()}"></h4>
     <h4 th:text="${user.getEmail()}"></h4>
-    <h4 th:text="${user.getPassword()}"></h4>
     <h4 th:each="role: ${user.roles}" th:text="${role.getName()}"></h4>
     <h4 th:text="${user.getUserId()}"></h4>
     <div th:if="${!user.activated}">
@@ -37,7 +32,7 @@
         <p th:text="${activationMessage}"></p>
     </div>
 
-    <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Edit youy profile</a>
+    <a th:href="@{/profile/edit}" th:if="${#authorization.expression('hasRole(''USER'')')}" class="btn btn-info">Edit your profile</a>
 </div>
 <div th:if="${noUser}">
     <h4 th:text="${noUser.toString()}"></h4>

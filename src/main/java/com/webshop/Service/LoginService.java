@@ -14,6 +14,7 @@ public class LoginService {
             Object principal = auth.getPrincipal();
             if (principal instanceof CustomUserDetails user) {
                 model.addAttribute("user", user.getUser());
+                model.addAttribute("userEncryptedPasswd", user.getUser().getPassword());
             } else {
                 model.addAttribute("noUser", "Principal is not recognized as User, UserDetails, or String, it's of type: " + principal.getClass().getName());
             }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/profile")
@@ -35,5 +37,11 @@ public class UserController {
         String response = userService.activateAccount(userId, token, model);
         model.addAttribute("activationMessage", response);
         return "profile";
+    }
+    @PostMapping("/newPassword")
+    public String changePassword(Model model, Authentication auth, @RequestParam String newPassword,
+                                 @RequestParam String oldPassword) {
+        userService.changePassword(model, auth, newPassword, oldPassword);
+        return "editProfile";
     }
 }
