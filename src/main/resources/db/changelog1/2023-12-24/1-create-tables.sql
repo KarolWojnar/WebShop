@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS Product (
    product_id INT AUTO_INCREMENT PRIMARY KEY,
    title VARCHAR(100) NOT NULL,
     description TEXT,
+    image TEXT,
     price DECIMAL(10, 2) NOT NULL,
     category_id INT,
     stock_quantity INT NOT NULL,

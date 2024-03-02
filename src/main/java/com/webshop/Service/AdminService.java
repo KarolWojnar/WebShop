@@ -55,6 +55,7 @@ public class AdminService {
             newProduct.setTitle(jObject.getString("title"));
             newProduct.setPrice(jObject.getDouble("price"));
             newProduct.setStockQuantity(100);
+            newProduct.setImage(jObject.getString("image"));
             newProduct.setRate(jObject.getJSONObject("rating").getDouble("rate"));
             newProduct.setCountRate(jObject.getJSONObject("rating").getInt("count"));
             productRepository.save(newProduct);

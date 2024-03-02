@@ -20,6 +20,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category categoryId;
+    private String image;
     private double rate;
     private int countRate;
 }
