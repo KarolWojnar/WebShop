@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
     Optional<Product> findProductByTitle(String name);
-    @Query("SELECT p FROM Product p JOIN FETCH p.categoryId")
+    @Query("SELECT p FROM Product p JOIN FETCH p.categoryId c")
     Iterable<Product> getAllProducts();
 }

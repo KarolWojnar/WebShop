@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    public void getAllMovies(Model model) {
+    public void getAllProducts(Model model) {
         Iterable<Product> products = productRepository.getAllProducts();
         model.addAttribute("products", products);
     }

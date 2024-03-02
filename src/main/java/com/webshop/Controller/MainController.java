@@ -13,7 +13,7 @@ public class MainController {
 
     @GetMapping("/home")
     public String returnHome(Model model) {
-        productService.getAllMovies(model);
+        productService.getAllProducts(model);
         return "home";
     }
 }
