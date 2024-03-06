@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+        }
+        .product-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .product-image {
+            max-width: 300px;
+            max-height: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .product-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .product-description {
+            margin-top: 10px;
+        }
+        .product-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 10px;
+        }
+        .product-stock {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .product-category {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .add-to-cart-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
+                    <a class="nav-link active" aria-current="page" th:href="@{/profile}">Profile</a>
+                </li>
+                <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+                </li>
+                <li class="nav-item" th:if="${#authentication.principal == 'anonymousUser'}">
+                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Login</a>
+                </li>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br /><br />
+<div class="product-container">
+    <div th:if="${product}">
+        <img class="product-image" th:src="${product.image}" alt="Product Image">
+        <h1 class="product-title" th:text="${product.title}"></h1>
+        <p class="product-description" th:text="${product.description}"></p>
+        <p class="product-price" th:text="'Price: $' + ${product.price}"></p>
+        <p class="product-stock" th:text="'Stock Quantity: ' + ${product.stockQuantity}"></p>
+        <p class="product-category" th:text="'Category: ' + ${product.categoryId.name}"></p>
+        <a href="#" class="add-to-cart-btn">Add to Cart</a>
+    </div>
+    <div th:if="${notFound}">
+        <p>Product not found.</p>
+    </div>
+</div>
+</body>
+</html>
