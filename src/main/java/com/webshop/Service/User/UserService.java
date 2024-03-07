@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -35,7 +36,16 @@ public class UserService {
         return userRepository.findById(id).orElseThrow();
     }
 
-    @Transactional
+    public User getAuthUser(Model model, Authentication auth) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) principal;
+            User user = userDetails.getUser();
+            model.addAttribute("user", user);
+            return user;
+        }
+        return null;
+    }
     public String addNewUser(User u) {
         Role role = roleRepository.findById(2L).orElseThrow();
         User newUser = new User();
@@ -50,22 +60,23 @@ public class UserService {
         return "Registration Succesfull!";
     }
 
-    @Transactional
     public void editUser(String username, String email, Model model, Authentication auth) {
-        if (auth.isAuthenticated()) {
-            Object principal = auth.getPrincipal();
-            if (principal instanceof CustomUserDetails user) {
-                Optional<User> optionalUser = userRepository.findById(user.getUser().getUserId());
-                if (optionalUser.isPresent()) {
-                    User editUser = optionalUser.get();
-                    editUser.setUsername(username);
-                    editUser.setEmail(email);
-                    userRepository.save(editUser);
-                    model.addAttribute("user", editUser);
-                    model.addAttribute("success", "Changes saved successfully.");
-                } else model.addAttribute("error", "No user by id");
-            } else model.addAttribute("error", "User is non principal of UserDetalis");
-        } else model.addAttribute("error", "Error while saving changes.2");
+        User user = getAuthUser(model, auth);
+        if (user != null) {
+            Optional<User> optionalUser = userRepository.findById(user.getUserId());
+            if (optionalUser.isPresent()) {
+                User editUser = optionalUser.get();
+                editUser.setUsername(username);
+                editUser.setEmail(email);
+                userRepository.save(editUser);
+                model.addAttribute("user", editUser);
+                model.addAttribute("success", "Changes saved successfully.");
+            } else {
+                model.addAttribute("error", "No user found");
+            }
+        } else {
+            model.addAttribute("error", "User not authenticated");
+        }
     }
 
     public boolean isNotPresent(User user) {
@@ -77,7 +88,6 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
-    @Transactional
     public String activateAccount(Long userId, String token, Model model) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
@@ -105,7 +115,6 @@ public class UserService {
                         userPassword.setPassword(passwordEncoder.encode(newPass));
                         userRepository.save(userPassword);
                         model.addAttribute("result", "Password changed!");
-                        model.addAttribute("user", userPassword);
                     } else model.addAttribute("result", "previous password is wrong!");
                 }
             }
