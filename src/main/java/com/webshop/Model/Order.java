@@ -20,6 +20,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "order_date", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Temporal(TemporalType.TIMESTAMP)
     private Timestamp orderDate;
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
