@@ -2,6 +2,7 @@ package com.webshop.Service;
 
 import com.webshop.Model.Product;
 import com.webshop.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -14,8 +15,7 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     public List<Product> getAllProducts() {
-        List<Product> products = productRepository.getAllProducts();
-        return products;
+        return productRepository.getAllProducts();
     }
 
     public void returnProduct(int id, Model model) {
@@ -26,19 +26,21 @@ public class ProductService {
         } else model.addAttribute("notFound", "Product Not Found");
     }
 
+    @Transactional
     public Product addProduct(Product product) {
         return productRepository.save(product);
     }
 
+    @Transactional
     public void deleteProductById(int productId) {
         productRepository.deleteProductByProductId(productId);
     }
 
+    @Transactional
     public Product updateProduct(Product updatedProduct) {
         Optional<Product> optional = productRepository.findById(updatedProduct.getProductId());
         if (optional.isPresent()) {
             Product existingProduct = optional.get();
-
             existingProduct.setTitle(updatedProduct.getTitle());
             existingProduct.setDescription(updatedProduct.getDescription());
             existingProduct.setPrice(updatedProduct.getPrice());

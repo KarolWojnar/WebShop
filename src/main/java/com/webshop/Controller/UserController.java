@@ -2,6 +2,8 @@ package com.webshop.Controller;
 
 import com.webshop.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,5 +38,11 @@ public class UserController {
                                  @RequestParam String oldPassword) {
         userService.changePassword(model, auth, newPassword, oldPassword);
         return "editProfile";
+    }
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable int userId) {
+        boolean deleted = userService.deleteUserById(userId);
+        if (deleted) return ResponseEntity.ok("User deleted!");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 }

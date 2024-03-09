@@ -4,18 +4,16 @@ import com.webshop.Model.Role;
 import com.webshop.Model.User;
 import com.webshop.Repository.RoleRepository;
 import com.webshop.Repository.UserRepository;
+import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +44,7 @@ public class UserService {
         }
         return null;
     }
+    @Transactional
     public String addNewUser(User u) {
         Role role = roleRepository.findById(2L).orElseThrow();
         User newUser = new User();
@@ -60,6 +59,7 @@ public class UserService {
         return "Registration Succesfull!";
     }
 
+    @Transactional
     public void editUser(String username, String email, Model model, Authentication auth) {
         User user = getAuthUser(model, auth);
         if (user != null) {
@@ -103,6 +103,7 @@ public class UserService {
        return "User not found";
     }
 
+    @Transactional
     public void changePassword(Model model, Authentication auth, String newPass, String oldPass) {
         if (auth.isAuthenticated()) {
             Object principal = auth.getPrincipal();
@@ -118,6 +119,15 @@ public class UserService {
                     } else model.addAttribute("result", "previous password is wrong!");
                 }
             }
+        }
+    }
+    @Transactional
+    public boolean deleteUserById(int id) {
+        try {
+            userRepository.deleteById((long) id);
+            return true;
+        } catch (EmptyResultDataAccessException e) {
+            return false;
         }
     }
 }

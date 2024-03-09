@@ -5,6 +5,7 @@ import com.webshop.Model.Category;
 import com.webshop.Model.Product;
 import com.webshop.Repository.CategoryRepository;
 import com.webshop.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ import java.util.concurrent.CompletableFuture;
 public class AdminService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    @Transactional
     public void addAllItems(Model model) throws JSONException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
