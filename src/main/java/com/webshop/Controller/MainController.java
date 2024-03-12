@@ -3,6 +3,7 @@ package com.webshop.Controller;
 import com.webshop.Model.Product;
 import com.webshop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
     private final ProductService productService;
-
     @GetMapping("/home")
     public String returnHome(Model model) {
         List<Product> products = productService.getAllProducts();
@@ -26,5 +26,10 @@ public class MainController {
     public String returnProductPage(@PathVariable int id, Model model) {
         productService.returnProduct(id, model);
         return "product";
+    }
+    @GetMapping("/cart")
+    public String showCart(Model model) {
+        model.addAttribute("products", productService.getCart(model));
+        return "cart";
     }
 }

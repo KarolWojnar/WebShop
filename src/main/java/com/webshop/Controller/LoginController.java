@@ -20,8 +20,8 @@ public class LoginController {
     }
 
     @GetMapping("/profile")
-    String home(Model model, Authentication authentication) {
-        userService.getAuthUser(model, authentication);
+    String home(Model model) {
+        userService.getAuthUser(model);
         return "profile";
     }
 

@@ -34,7 +34,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow();
     }
 
-    public User getAuthUser(Model model, Authentication auth) {
+    public User getAuthUser(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof CustomUserDetails) {
             CustomUserDetails userDetails = (CustomUserDetails) principal;
@@ -61,7 +61,7 @@ public class UserService {
 
     @Transactional
     public void editUser(String username, String email, Model model, Authentication auth) {
-        User user = getAuthUser(model, auth);
+        User user = getAuthUser(model);
         if (user != null) {
             Optional<User> optionalUser = userRepository.findById(user.getUserId());
             if (optionalUser.isPresent()) {

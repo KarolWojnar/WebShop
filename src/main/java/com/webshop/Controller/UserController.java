@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     @GetMapping("/edit")
-    public String userEditProfile(Model model, Authentication auth) {
-        userService.getAuthUser(model, auth);
+    public String userEditProfile(Model model) {
+        userService.getAuthUser(model);
         return "editProfile";
     }
 
