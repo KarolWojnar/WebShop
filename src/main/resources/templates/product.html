@@ -88,7 +88,8 @@
         <p class="product-price" th:text="'Price: $' + ${product.price}"></p>
         <p class="product-stock" th:text="'Stock Quantity: ' + ${product.stockQuantity}"></p>
         <p class="product-category" th:text="'Category: ' + ${product.categoryId.name}"></p>
-        <a href="#" class="add-to-cart-btn">Add to Cart</a>
+        <a th:if="${product.stockQuantity > 0 && #authentication.principal != 'anonymousUser'}" href="#" class="add-to-cart-btn">Add to Cart</a>
+        <a th:href="@{/login}" th:if="${product.stockQuantity > 0 && #authentication.principal == 'anonymousUser'}" class="add-to-cart-btn">Add to Cart</a>
     </div>
     <div th:if="${notFound}">
         <p>Product not found.</p>
