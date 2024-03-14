@@ -44,6 +44,15 @@ public class UserService {
         }
         return null;
     }
+    public User getAuthUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) principal;
+            User user = userDetails.getUser();
+            return user;
+        }
+        return null;
+    }
     @Transactional
     public String addNewUser(User u) {
         Role role = roleRepository.findById(2L).orElseThrow();

@@ -91,12 +91,34 @@
         <p class="product-price" th:text="'Price: $' + ${product.price}"></p>
         <p class="product-stock" th:text="'Stock Quantity: ' + ${product.stockQuantity}"></p>
         <p class="product-category" th:text="'Category: ' + ${product.categoryId.name}"></p>
-        <a th:if="${product.stockQuantity > 0 && #authentication.principal != 'anonymousUser'}" href="#" class="add-to-cart-btn">Add to Cart</a>
+        <form id="addToCartForm" th:if="${product.stockQuantity > 0 && #authentication.principal != 'anonymousUser'}">
+            <input type="hidden" name="productId" th:value="${product.productId}">
+            <button class="add-to-cart-btn" type="submit">Add to Cart</button>
+        </form>
         <a th:href="@{/login}" th:if="${product.stockQuantity > 0 && #authentication.principal == 'anonymousUser'}" class="add-to-cart-btn">Add to Cart</a>
     </div>
     <div th:if="${notFound}">
         <p>Product not found.</p>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#addToCartForm').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/cart/add',
+                data: formData,
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
