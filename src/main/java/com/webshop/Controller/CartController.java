@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @RequestMapping("/cart")
 public class CartController {
-    private CartServices cartServices;
+    private final CartServices cartServices;
 
     @PostMapping("/add")
     public ResponseEntity<String> addToCart(@RequestParam int productId) {
