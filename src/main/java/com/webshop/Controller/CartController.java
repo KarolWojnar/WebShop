@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.awt.desktop.ScreenSleepEvent;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/cart")
@@ -16,8 +18,12 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addToCart(@RequestParam int productId) {
-        System.out.println(productId);
         cartServices.addToCart(productId);
         return ResponseEntity.ok("Product added to cart successfully!");
+    }
+    @PostMapping("/remove")
+    public ResponseEntity<String> removeFromCart(@RequestParam int productId) {
+        cartServices.removeFromCart(productId);
+        return ResponseEntity.ok("Product removed!");
     }
 }

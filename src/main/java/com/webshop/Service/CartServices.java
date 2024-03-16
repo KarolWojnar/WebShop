@@ -49,4 +49,21 @@ public class CartServices {
             }
         }
     }
+
+    @Transactional
+    public void removeFromCart(int productId) {
+        User user = userService.getAuthUser();
+        Cart cart = cartRepository.findByUser(user);
+        Optional<Product> product = productRepository.findById((long) productId);
+        if (product.isPresent()) {
+            Optional<CartItem> cartItem = cartItemRepository.findByCartAndProduct(cart, product.get());
+            if (cartItem.isPresent()) {
+                if (cartItem.get().getQuantity() == 1) cartItemRepository.delete(cartItem.get());
+                else if (cartItem.get().getQuantity() > 1) {
+                    cartItem.get().setQuantity(cartItem.get().getQuantity() - 1);
+                    cartItemRepository.save(cartItem.get());
+                }
+            }
+        }
+    }
 }
