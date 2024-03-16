@@ -69,18 +69,20 @@ public class ProductService {
 
     public List<Product> getCart(Model model) {
         User user = userService.getAuthUser(model);
-        return getItemsByUser(user);
+        return getItemsByUser(user, model);
     }
-
-    private List<Product> getItemsByUser(User user) {
+    private List<Product> getItemsByUser(User user, Model model) {
         Cart cart = cartRepository.findByUser(user);
         if (cart == null) return Collections.emptyList();
 
         List<CartItem> cartItems = cartItemRepository.getCartItemsByCart(cart);
         List<Product> products = new ArrayList<>();
+        List<Integer> quantity = new ArrayList<>();
         for (CartItem item: cartItems) {
             products.add(item.getProduct());
+            quantity.add(item.getQuantity());
         }
+        model.addAttribute("quantity", quantity);
         return products;
     }
 }

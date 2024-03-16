@@ -16,6 +16,7 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addToCart(@RequestParam int productId) {
+        System.out.println(productId);
         cartServices.addToCart(productId);
         return ResponseEntity.ok("Product added to cart successfully!");
     }

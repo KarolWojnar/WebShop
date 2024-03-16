@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Profile</title>
+    <title>home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Title</title>
     <style>
@@ -69,7 +69,10 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <a th:href="@{'/product/' + ${product.getProductId}}" class="btn btn-sm btn-outline-secondary">View</a>
-                            <button th:if="${product.stockQuantity > 0 && #authentication.principal != 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary">Add to Cart</button>
+                            <form th:id="'addToCartForm' + ${product.productId}" th:if="${product.stockQuantity > 0 && #authentication.principal != 'anonymousUser'}">
+                                <input type="hidden" name="productId" th:value="${product.productId}">
+                                <button class="btn btn-sm btn-outline-secondary" type="submit">Add to Cart</button>
+                            </form>
                             <a th:href="@{/login}" th:if="${product.stockQuantity > 0 && #authentication.principal == 'anonymousUser'}" class="btn btn-sm btn-outline-secondary">Add to Cart</a>
                         </div>
                         <p class="text-muted" th:text="${product.categoryId.name}"></p>
@@ -80,5 +83,25 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('form[id^="addToCartForm"]').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/cart/add',
+                data: formData,
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

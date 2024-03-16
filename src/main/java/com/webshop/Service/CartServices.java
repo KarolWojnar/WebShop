@@ -10,11 +10,7 @@ import com.webshop.Repository.ProductRepository;
 import com.webshop.Service.User.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -36,7 +32,7 @@ public class CartServices {
             if (cart == null) {
                 cart = new Cart();
                 cart.setUser(user);
-                cart.setStatus("new");
+                cart.setStatus("status");
                 cartRepository.save(cart);
             }
             Optional<CartItem> optionalCartItem = cartItemRepository.findByCartAndProduct(cart, product);
@@ -49,6 +45,7 @@ public class CartServices {
                 newCartItem.setQuantity(1);
                 newCartItem.setCart(cart);
                 newCartItem.setProduct(product);
+                cartItemRepository.save(newCartItem);
             }
         }
     }

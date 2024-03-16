@@ -54,7 +54,7 @@
 <div class="container">
     <div class="row">
         <h1>Cart</h1>
-        <div th:if="${products.size() > 0}" class="col-md-4" th:each="item: ${products}">
+        <div th:if="${products.size() > 0}" class="col-md-4" th:each="item, i: ${products}">
             <div class="card mb-4 box-shadow">
                 <img class="card-img-top imgProcudct" th:src="${item.image}" alt="Product image">
                 <div class="card-body">
@@ -63,8 +63,8 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-sm btn-outline-secondary">Remove from Cart</button>
                         </div>
-                        <p class="text-muted" th:text="${item.categoryId.name}"></p>
-                        <small class="text-muted" th:text="${item.price}"></small>
+                        <span>Quantity: <span th:text="${quantity[i.index]}"></span></span>
+                        <small class="text-muted" th:text="${item.price * quantity[i.index]}"></small>
                     </div>
                 </div>
             </div>
