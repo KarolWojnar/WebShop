@@ -38,28 +38,13 @@ public class CartServiceTest {
         MockitoAnnotations.initMocks(this);
     }
     @Test
-    void testAddToCart() {
-        // Given
+    void testAddToCartProductNotFound() {
         int productId = 1;
-        User user = new User();
-        Product product = new Product();
-        Cart cart = new Cart();
-        CartItem cartItem = new CartItem();
-        cartItem.setQuantity(2);
+        when(productRepository.findById((long) productId)).thenReturn(Optional.empty());
 
-        when(productRepository.findById((long) productId)).thenReturn(Optional.of(product));
-        when(userService.getAuthUser()).thenReturn(user);
-        when(cartRepository.findByUser(user)).thenReturn(cart);
-        when(cartItemRepository.findByCartAndProduct(cart, product)).thenReturn(Optional.of(cartItem));
-
-        // When
         cartServices.addToCart(productId);
-
-        // Then
-        assertEquals(3, cartItem.getQuantity());
-        verify(cartItemRepository, times(1)).save(any(CartItem.class));
+        verify(cartItemRepository, never()).save(any(CartItem.class));
     }
-
     @Test
     void testAddToCartNewCartItem() {
         int productId = 1;
@@ -75,13 +60,24 @@ public class CartServiceTest {
         cartServices.addToCart(productId);
         verify(cartItemRepository, times(1)).save(any(CartItem.class));
     }
-
     @Test
-    void testAddToCartProductNotFound() {
+    void testAddToCart() {
+        // Given
         int productId = 1;
-        when(productRepository.findById((long) productId)).thenReturn(Optional.empty());
+        User user = new User();
+        Product product = new Product();
+        Cart cart = new Cart();
+        CartItem cartItem = new CartItem();
+        cartItem.setQuantity(2);
+
+        when(productRepository.findById((long) productId)).thenReturn(Optional.of(product));
+        when(userService.getAuthUser()).thenReturn(user);
+        when(cartRepository.findByUser(user)).thenReturn(cart);
+        when(cartItemRepository.findByCartAndProduct(cart, product)).thenReturn(Optional.of(cartItem));
 
         cartServices.addToCart(productId);
-        verify(cartItemRepository, never()).save(any(CartItem.class));
+
+        assertEquals(3, cartItem.getQuantity());
+        verify(cartItemRepository, times(1)).save(any(CartItem.class));
     }
 }
