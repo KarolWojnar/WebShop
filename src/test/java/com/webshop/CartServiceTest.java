@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.parameters.P;
 
 import java.util.Optional;
 
@@ -62,7 +63,6 @@ public class CartServiceTest {
     }
     @Test
     void testAddToCart() {
-        // Given
         int productId = 1;
         User user = new User();
         Product product = new Product();
@@ -79,5 +79,46 @@ public class CartServiceTest {
 
         assertEquals(3, cartItem.getQuantity());
         verify(cartItemRepository, times(1)).save(any(CartItem.class));
+    }
+    @Test
+    void removeFromCartWhenSingleItem() {
+        int productId = 1;
+        User user = new User();
+        Cart cart = new Cart();
+        Product product = new Product();
+        CartItem cartItem = new CartItem();
+        cartItem.setQuantity(1);
+
+        when(productRepository.findById((long) productId)).thenReturn(Optional.of(product));
+        when(userService.getAuthUser()).thenReturn(user);
+        when(cartRepository.findByUser(user)).thenReturn(cart);
+        when(cartItemRepository.findByCartAndProduct(cart, product)).thenReturn(Optional.of(cartItem));
+        // when
+        cartServices.removeFromCart(productId);
+        // then
+        verify(cartItemRepository, times(1)).findByCartAndProduct(cart, product);
+        verify(cartItemRepository, times(1)).delete(any(CartItem.class));
+        verify(cartItemRepository, never()).save(any(CartItem.class));
+    }
+
+    @Test
+    void removeFromCartWhenMultipleItems() {
+        int productId = 1;
+        User user = new User();
+        Cart cart = new Cart();
+        Product product = new Product();
+        CartItem cartItem = new CartItem();
+        cartItem.setQuantity(2);
+
+        when(productRepository.findById((long) productId)).thenReturn(Optional.of(product));
+        when(userService.getAuthUser()).thenReturn(user);
+        when(cartRepository.findByUser(user)).thenReturn(cart);
+        when(cartItemRepository.findByCartAndProduct(cart, product)).thenReturn(Optional.of(cartItem));
+        // when
+        cartServices.removeFromCart(productId);
+        // then
+        verify(cartItemRepository, times(1)).findByCartAndProduct(cart, product);
+        verify(cartItemRepository, times(1)).save(any(CartItem.class));
+        verify(cartItemRepository, never()).delete(any(CartItem.class));
     }
 }
