@@ -10,7 +10,6 @@ import com.webshop.Repository.ProductRepository;
 import com.webshop.Service.User.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

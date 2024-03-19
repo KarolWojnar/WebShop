@@ -4,7 +4,6 @@ import com.webshop.Model.Role;
 import com.webshop.Model.User;
 import com.webshop.Repository.RoleRepository;
 import com.webshop.Repository.UserRepository;
-import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;

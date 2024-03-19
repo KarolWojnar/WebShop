@@ -3,7 +3,6 @@ package com.webshop.Controller;
 import com.webshop.Model.Product;
 import com.webshop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,5 @@
 package com.webshop.Service;
 
-import com.google.gson.JsonArray;
 import com.webshop.Model.Category;
 import com.webshop.Model.Product;
 import com.webshop.Repository.CategoryRepository;

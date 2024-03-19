@@ -1,7 +1,6 @@
 package com.webshop.Model;
 
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
