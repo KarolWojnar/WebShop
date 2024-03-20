@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Cart_item (
     FOREIGN KEY (product_id) REFERENCES Product(product_id)
     );
 
-CREATE TABLE IF NOT EXISTS `Order` (
+CREATE TABLE IF NOT EXISTS `Orders` (
      order_id INT AUTO_INCREMENT PRIMARY KEY,
      user_id INT,
      order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS Order_item (
      product_id INT,
      quantity INT NOT NULL,
      unit_price DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES `Order`(order_id),
+    FOREIGN KEY (order_id) REFERENCES `Orders`(order_id),
     FOREIGN KEY (product_id) REFERENCES Product(product_id)
     );
 
