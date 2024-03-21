@@ -8,6 +8,7 @@ import com.webshop.Repository.CartItemRepository;
 import com.webshop.Repository.CartRepository;
 import com.webshop.Repository.ProductRepository;
 import com.webshop.Service.User.UserService;
+import com.webshop.interfaces.CrudInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class ProductService implements CrudInterface<Product> {
     private final ProductRepository productRepository;
     private final UserService userService;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    public List<Product> getAllProducts() {
+    @Override
+    public List<Product> getAll() {
         return productRepository.getAllProducts();
     }
 
@@ -38,12 +40,14 @@ public class ProductService {
     }
 
     @Transactional
-    public Product addProduct(Product product) {
+    @Override
+    public Product add(Product product) {
         return productRepository.save(product);
     }
 
     @Transactional
-    public void deleteProductById(int productId) {
+    @Override
+    public void delete(int productId) {
         productRepository.deleteProductByProductId(productId);
     }
 

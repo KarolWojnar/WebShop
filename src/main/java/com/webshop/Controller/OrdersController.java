@@ -17,17 +17,17 @@ public class OrdersController {
 
     @GetMapping
     public ResponseEntity<List<Orders>> getAllOrders() {
-        List<Orders> orders = ordersService.getAllOrders();
+        List<Orders> orders = ordersService.getAll();
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Orders> addNewOrder(@RequestBody Orders order) {
-        Orders newOrder = ordersService.addOrder(order);
+        Orders newOrder = ordersService.add(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Orders> deleteOrder(@PathVariable int id) {
-        ordersService.deleteOrder(id);
+        ordersService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
