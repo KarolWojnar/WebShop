@@ -42,7 +42,7 @@
             margin-top: 5px;
         }
         .add-to-cart-btn {
-            background-color: #28a745;
+            background-color: #717470;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -52,7 +52,15 @@
             margin-top: 10px;
         }
         .add-to-cart-btn:hover {
-            background-color: #218838;
+            background-color: rgba(82, 82, 82, 0.59);
+        }
+        .add-to-cart-btn-success {
+            background-color: rgba(33, 183, 0, 0.85);
+            color: #fff;
+        }
+        .add-to-cart-btn-error {
+            background-color: #dc3545;
+            color: #fff;
         }
     </style>
 </head>
@@ -69,7 +77,7 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/profile}">Profile</a>
                 </li>
                 <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
-                    <a class="nav-link active" aria-current="page" th:href="@{/cart}">Cart</a>
+                    <a class="nav-link active cart" aria-current="page" th:href="@{/cart}">Cart</a>
                 </li>
                 <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
                     <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
@@ -112,10 +120,16 @@
                 url: '/cart/add',
                 data: formData,
                 success: function(response) {
-                    alert(response);
+                    $('.add-to-cart-btn').addClass('add-to-cart-btn-success');
+                    setTimeout(function() {
+                        $('.add-to-cart-btn').removeClass('add-to-cart-btn-success');
+                    }, 3000);
                 },
                 error: function(xhr, status, error) {
-                    alert('Error: ' + error);
+                    $('.add-to-cart-btn').addClass('add-to-cart-btn-error');
+                    setTimeout(function() {
+                        $('.add-to-cart-btn').removeClass('add-to-cart-btn-error');
+                    }, 3000);
                 }
             });
         });
