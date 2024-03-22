@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `Orders` (
      order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      total_price DECIMAL(10, 2) NOT NULL,
     status VARCHAR(20) NOT NULL,
+    adress VARCHAR(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
     );
 
@@ -86,4 +87,11 @@ CREATE TABLE IF NOT EXISTS Address (
     country VARCHAR(100) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
     );
+
+CREATE TABLE IF NOT EXISTS Code (
+    code_id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(255) NOT NULL,
+    discount DECIMAL(10, 2) NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT FALSE
+);
 

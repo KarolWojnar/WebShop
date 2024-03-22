@@ -41,3 +41,10 @@ INSERT INTO Address (user_id, street, city, zip_code, country) VALUES
        (8, 'Street8', 'City8', '89012', 'Country8'),
        (9, 'Street9', 'City9', '90123', 'Country9'),
        (10, 'Street10', 'City10', '01234', 'Country10');
+
+INSERT INTO Code (code_id, code, discount, is_active) VALUES
+      (1, 'PROMO10', 0.1, true),
+      (2, 'PROMO15', 0.15, true),
+      (3, 'PROMO18', 0.18, false),
+      (4, 'PROMO20', 0.2, true),
+      (5, 'PROMO25', 0.25, true);
