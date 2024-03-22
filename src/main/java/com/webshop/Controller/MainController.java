@@ -16,7 +16,7 @@ public class MainController {
     private final ProductService productService;
     @GetMapping("/home")
     public String returnHome(Model model) {
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getAll();
         model.addAttribute("products", products);
         return "home";
     }
@@ -30,5 +30,10 @@ public class MainController {
     public String showCart(Model model) {
         model.addAttribute("products", productService.getCart(model));
         return "cart";
+    }
+    @GetMapping("/order")
+    public String getOrder(Model model) {
+        model.addAttribute("products", productService.getCart(model));
+        return "order";
     }
 }

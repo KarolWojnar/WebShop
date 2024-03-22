@@ -16,17 +16,17 @@ public class ProductController {
     private final ProductService productService;
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getAll();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product newItem = productService.addProduct(product);
+        Product newItem = productService.add(product);
         return  ResponseEntity.status(HttpStatus.CREATED).body(newItem);
     }
     @DeleteMapping("/{productId}")
     public ResponseEntity<Product> deleteProduct(@PathVariable int productId) {
-        productService.deleteProductById(productId);
+        productService.delete(productId);
         return ResponseEntity.noContent().build();
     }
     @PutMapping("/{productId}")

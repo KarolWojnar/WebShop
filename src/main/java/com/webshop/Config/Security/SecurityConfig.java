@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/profile/**", "/cart").authenticated()
+                        .requestMatchers("/profile/**", "/cart", "/order").authenticated()
                         .requestMatchers("/swagger-ui/**", "/api/**").hasRole("ADMIN")
                         .requestMatchers("/users/{id}").access("@userSecurity.checkUserId(authentication, #id)")
                         .anyRequest().permitAll()

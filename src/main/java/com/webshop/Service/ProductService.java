@@ -81,11 +81,14 @@ public class ProductService implements CrudInterface<Product> {
         List<CartItem> cartItems = cartItemRepository.getCartItemsByCart(cart);
         List<Product> products = new ArrayList<>();
         List<Integer> quantity = new ArrayList<>();
+        double totalPrice = 0;
         for (CartItem item: cartItems) {
             products.add(item.getProduct());
             quantity.add(item.getQuantity());
+            totalPrice += (item.getProduct().getPrice() * item.getQuantity());
         }
         model.addAttribute("quantity", quantity);
+        model.addAttribute("totalPrice", totalPrice);
         return products;
     }
 }
