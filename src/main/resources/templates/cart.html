@@ -84,7 +84,7 @@
                 </div>
             </div>
         <h2 th:text="'Total price: ' + ${totalPrice}" class="text-end"></h2>
-        <a th:href="@{/order}" class="add-to-order-btn">Submit your order</a>
+        <a th:href="@{/order}" th:if="${products.size() > 0}" class="add-to-order-btn">Submit your order</a>
         <div th:if="${products.isEmpty()}">
             <p>Your cart is empty.</p>
         </div>

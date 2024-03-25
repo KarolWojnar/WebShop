@@ -1,7 +1,9 @@
 package com.webshop.Service.User;
 
+import com.webshop.Model.Address;
 import com.webshop.Model.Role;
 import com.webshop.Model.User;
+import com.webshop.Repository.AddressRepository;
 import com.webshop.Repository.RoleRepository;
 import com.webshop.Repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final AddressRepository addressRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findUsers();
@@ -137,5 +140,13 @@ public class UserService {
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
+    }
+
+    public Address getAddress() {
+        User user = getAuthUser();
+        if (user != null) {
+            return addressRepository.getAddressByUser(user);
+        }
+        return null;
     }
 }

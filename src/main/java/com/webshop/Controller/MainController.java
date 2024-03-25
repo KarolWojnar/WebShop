@@ -2,6 +2,7 @@ package com.webshop.Controller;
 
 import com.webshop.Model.Product;
 import com.webshop.Service.ProductService;
+import com.webshop.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
     private final ProductService productService;
+    private final UserService userService;
     @GetMapping("/home")
     public String returnHome(Model model) {
         List<Product> products = productService.getAll();
@@ -34,6 +36,7 @@ public class MainController {
     @GetMapping("/order")
     public String getOrder(Model model) {
         model.addAttribute("products", productService.getCart(model));
+        model.addAttribute("address", userService.getAddress());
         return "order";
     }
 }
