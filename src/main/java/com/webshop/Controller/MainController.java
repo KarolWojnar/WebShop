@@ -2,7 +2,11 @@ package com.webshop.Controller;
 
 import com.webshop.Model.Address;
 import com.webshop.Model.Cart;
+import com.webshop.Model.CartItem;
 import com.webshop.Model.Product;
+import com.webshop.Repository.CartItemRepository;
+import com.webshop.Repository.CartRepository;
+import com.webshop.Service.CartServices;
 import com.webshop.Service.OrdersService;
 import com.webshop.Service.ProductService;
 import com.webshop.Service.User.UserService;
@@ -20,6 +24,8 @@ public class MainController {
     private final ProductService productService;
     private final UserService userService;
     private final OrdersService ordersService;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     @GetMapping("/home")
     public String returnHome(Model model) {
         List<Product> products = productService.getAll();
@@ -39,10 +45,12 @@ public class MainController {
     }
     @GetMapping("/order")
     public String getOrder(Model model) {
-        List<Product> cart = productService.getCart(model);
+        Cart cart = cartRepository.findByUser(userService.getAuthUser());
+        List<CartItem> cartItem = cartItemRepository.getCartItemsByCart(cart);
+        List<Product> products = productService.getCart(model);
         Address address = userService.getAddress();
-        ordersService.createOrder(cart, address);
-        model.addAttribute("products", cart);
+        ordersService.createOrder(cartItem, address);
+        model.addAttribute("products", products);
         model.addAttribute("address", address);
         return "order";
     }

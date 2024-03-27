@@ -14,4 +14,5 @@ public interface OrdersRepository extends CrudRepository<Orders, Long> {
     @Query("SELECT o FROM Orders o")
     List<Orders> findAll();
     Optional<Orders> getOrdersByUserAndStatus(User user, String status);
+
 }

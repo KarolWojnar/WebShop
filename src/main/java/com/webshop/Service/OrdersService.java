@@ -7,7 +7,6 @@ import com.webshop.Service.User.UserService;
 import com.webshop.interfaces.CrudInterface;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,9 +49,11 @@ public class OrdersService implements CrudInterface<Orders> {
     public void findCode(String promocode) {
     }
 
-    public void createOrder(List<Product> cart, Address address) {
+    @Transactional
+    public void createOrder(List<CartItem> cartItem, Address address) {
         Optional<Orders> isOrder = ordersRepository.getOrdersByUserAndStatus(userService.getAuthUser(), "created");
-        if (isOrder.isEmpty()) {
+        if (isOrder.isPresent()) {
+            orderItemRepository.deleteAllByOrder(isOrder.get());
             ordersRepository.delete(isOrder.get());
         }
         Orders order = new Orders();
@@ -61,11 +62,23 @@ public class OrdersService implements CrudInterface<Orders> {
         order.setUser(userService.getAuthUser());
         order.setStatus("created");
         double price = 0;
-        for (Product item : cart) {
-            price += item.getPrice();
+        for (CartItem item : cartItem) {
+            price += (item.getProduct().getPrice() * item.getQuantity());
         }
         order.setTotalPrice(BigDecimal.valueOf(price));
         order.setAdress(address.getCountry() + ", " + address.getCity() + " " + address.getZipCode() + ", " + address.getStreet());
         add(order);
+        addItemsToOrder(cartItem, order);
+    }
+
+    private void addItemsToOrder(List<CartItem> cartItem, Orders order) {
+        for (CartItem item : cartItem) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(item.getProduct());
+            orderItem.setQuantity(item.getQuantity());
+            orderItem.setUnitPrice(BigDecimal.valueOf(item.getProduct().getPrice()));
+            orderItemRepository.save(orderItem);
+        }
     }
 }
