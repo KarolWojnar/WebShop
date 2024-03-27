@@ -30,7 +30,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/profile")
+                        .defaultSuccessUrl("/home")
                         .permitAll()
                 )
                 .logout(logout -> logout
