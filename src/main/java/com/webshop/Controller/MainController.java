@@ -1,6 +1,9 @@
 package com.webshop.Controller;
 
+import com.webshop.Model.Address;
+import com.webshop.Model.Cart;
 import com.webshop.Model.Product;
+import com.webshop.Service.OrdersService;
 import com.webshop.Service.ProductService;
 import com.webshop.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 public class MainController {
     private final ProductService productService;
     private final UserService userService;
+    private final OrdersService ordersService;
     @GetMapping("/home")
     public String returnHome(Model model) {
         List<Product> products = productService.getAll();
@@ -35,8 +39,11 @@ public class MainController {
     }
     @GetMapping("/order")
     public String getOrder(Model model) {
-        model.addAttribute("products", productService.getCart(model));
-        model.addAttribute("address", userService.getAddress());
+        List<Product> cart = productService.getCart(model);
+        Address address = userService.getAddress();
+        ordersService.createOrder(cart, address);
+        model.addAttribute("products", cart);
+        model.addAttribute("address", address);
         return "order";
     }
 }

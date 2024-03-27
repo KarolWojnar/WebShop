@@ -83,8 +83,10 @@
                     </div>
                 </div>
             </div>
-        <h2 th:text="'Total price: ' + ${totalPrice}" class="text-end"></h2>
-        <a th:href="@{/order}" th:if="${products.size() > 0}" class="add-to-order-btn">Submit your order</a>
+        <h2 th:if="${products.size() > 0}" th:text="'Total price: ' + ${totalPrice}" class="text-end"></h2>
+        <div class="d-flex justify-content-end w-100">
+            <a th:href="@{/order}" th:if="${products.size() > 0}" class="add-to-order-btn w-25 text-center">Submit your order</a>
+        </div>
         <div th:if="${products.isEmpty()}">
             <p>Your cart is empty.</p>
         </div>

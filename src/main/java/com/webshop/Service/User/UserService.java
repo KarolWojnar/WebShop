@@ -145,7 +145,7 @@ public class UserService {
     public Address getAddress() {
         User user = getAuthUser();
         if (user != null) {
-            return addressRepository.getAddressByUser(user);
+            return addressRepository.getFirstByUser(user);
         }
         return null;
     }

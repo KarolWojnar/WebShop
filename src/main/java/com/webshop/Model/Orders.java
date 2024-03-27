@@ -27,4 +27,6 @@ public class Orders {
 
     @Column(name = "status", nullable = false, length = 20)
     private String status;
+    @Column(name = "adress", nullable = false, length = 200)
+    private String adress;
 }

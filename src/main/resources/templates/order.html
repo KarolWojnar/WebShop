@@ -66,16 +66,22 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div class="row mt-3">
             <div class="col-md-3">
                 <label for="promoCode" class="form-label">Promo code</label>
-                <input type="text" class="form-control" id="promoCode" name="promoCode">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="promoCode" name="promoCode">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="checkPromoCode">Check Promo Code</button>
+                </div>
             </div>
-            <h2 th:text="'Total price: ' + ${totalPrice}" class="text-end"></h2>
+            <div class="col-md-9 text-end">
+                <h2 th:text="'Total price: ' + ${totalPrice}"></h2>
+            </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-12">
                 <span class="m-2"><button type="submit" class="btn btn-primary">Place Order</button></span>
-                <span class="m-2"><button type="button" class="btn btn-success" id="checkPromoCode">Check Promo Code</button></span>
                 <span class="m-2"><a th:href="@{/cart}" type="submit" class="btn btn-danger">Cancel</a></span>
             </div>
         </div>
@@ -89,8 +95,9 @@
             var promoCode = $('#promoCode').val();
             $.ajax({
                 type: 'POST',
-                url: '/api/promo/check',
-                data: { promoCode: promoCode },
+                url: '/api/orders/promo',
+                data: promoCode,
+                contentType: 'text/plain',
                 success: function(response) {
                     if (response.discount) {
                         alert('Promo code applied! Discount: ' + response.discount);
@@ -104,6 +111,7 @@
             });
         });
     });
+
 </script>
 </body>
 </html>
